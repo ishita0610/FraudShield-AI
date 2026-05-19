@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Login — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🔐</div>
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">Sign in to your FraudShield AI account</p>
+    </div>
+
+    <!-- html-validate-disable-next attribute-allowed-values -->
+<form method="post" action="{% url 'accounts:login' %}">
+      {% csrf_token %}
+
+      <div class="form-group">
+  <label class="form-label">Username</label>
+  <input type="text" name="username" class="form-control"
+    placeholder="Your username" required autofocus
+    autocomplete="username"
+    value="{{ request.POST.username|default:'' }}">
+</div>
+
+<div class="form-group">
+  <label class="form-label">Password</label>
+  <input type="password" name="password" class="form-control"
+    placeholder="Your password" required
+    autocomplete="current-password">
+</div>
+      <button type="submit" class="btn btn-primary btn-full btn-lg btn-spacing">
+        Sign In &amp; Get OTP →
+      </button>
+    </form>
+
+    <div class="info-box">
+      ℹ️ After login, a 6-digit OTP will be printed in your terminal for verification.
+    </div>
+
+    <div class="auth-footer">
+      Don't have an account?
+      <a href="{% url 'accounts:signup' %}">Sign up free</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

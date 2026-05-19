@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Verify OTP — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🔑</div>
+      <h1 class="auth-title">OTP Verification</h1>
+      <p class="auth-subtitle">
+        {% if username %}
+        Hi <strong class="accent-text">{{ username }}</strong>!
+        {% endif %}
+        Check your terminal for the 6-digit code.
+      </p>
+    </div>
+<!-- html-validate-disable-next attribute-allowed-values -->
+<form method="post" action="{% url 'accounts:verify_otp' %}">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label center-label">Enter OTP Code</label>
+        <input type="text" name="otp" class="form-control otp-input"
+          placeholder="● ● ● ● ● ●"
+          maxlength="6"
+          pattern="[0-9]{6}"
+          required autofocus
+          autocomplete="one-time-code">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full btn-lg">
+        Verify &amp; Enter →
+      </button>
+    </form>
+
+    <div class="otp-info-box">
+      ⏱️ OTP expires in 5 minutes.
+      <a href="{% url 'accounts:login' %}" class="warning-link">Request new OTP</a>
+    </div>
+
+    <div class="auth-footer">
+      <a href="{% url 'accounts:login' %}">← Back to Login</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

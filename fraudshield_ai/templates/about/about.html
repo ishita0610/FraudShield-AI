@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}About — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">About FraudShield AI</h1>
+    <p class="page-subtitle">AI-powered financial protection for the modern world</p>
+  </div>
+
+  <div class="about-wrapper">
+
+    <div class="card about-card">
+      <h2 class="section-title primary">🛡️ Our Mission</h2>
+      <p class="section-text">
+        FraudShield AI was built to give individuals and businesses enterprise-grade fraud detection without the enterprise price tag.
+        Powered by machine learning models trained on real fraud patterns, we help you identify suspicious transactions before they cause damage.
+      </p>
+    </div>
+
+    <div class="card about-card">
+      <h2 class="section-title secondary">🤖 Technology Stack</h2>
+
+      <div class="tech-grid">
+        <div>
+          <div class="tech-label">Backend</div>
+          <ul class="tech-list">
+            <li>🐍 Python / Django</li>
+            <li>🗄️ SQLite Database</li>
+            <li>🔐 Django Auth + OTP</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="tech-label">ML Models</div>
+          <ul class="tech-list">
+            <li>🌲 Random Forest Classifier</li>
+            <li>🔬 Isolation Forest (Anomaly)</li>
+            <li>📏 Standard Scaler</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card about-card">
+      <h2 class="section-title warning">⚠️ Disclaimer</h2>
+      <p class="section-text small">
+        This is a demonstration application. The ML models are trained on synthetic data.
+        Do not use this system as the sole basis for financial decisions in production environments.
+        Always consult qualified fraud prevention specialists.
+      </p>
+    </div>
+
+    <div class="cta-center">
+      {% if user.is_authenticated %}
+      <a href="{% url 'transactions:check' %}" class="btn btn-primary btn-lg">Check a Transaction →</a>
+      {% else %}
+      <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg">Get Started Free →</a>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="container dashboard-container">
+
+  <div class="page-header dashboard-header">
+    <div>
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">
+        Welcome back,
+        <strong class="accent-text">{{ user.username }}</strong>
+        — here's your fraud overview
+      </p>
+    </div>
+    <a href="{% url 'transactions:check' %}" class="btn btn-primary">+ Check Transaction</a>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-grid">
+    <div class="stat-card stat-total">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value">{{ total }}</div>
+      <div class="stat-label">Total Transactions</div>
+    </div>
+
+    <div class="stat-card stat-fraud">
+      <div class="stat-icon">🚨</div>
+      <div class="stat-value">{{ fraud_count }}</div>
+      <div class="stat-label">Fraud Detected</div>
+    </div>
+
+    <div class="stat-card stat-safe">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value">{{ safe_count }}</div>
+      <div class="stat-label">Safe Transactions</div>
+    </div>
+
+    <div class="stat-card stat-rate">
+      <div class="stat-icon">📈</div>
+      <div class="stat-value">{{ fraud_rate }}%</div>
+      <div class="stat-label">Fraud Rate</div>
+    </div>
+  </div>
+
+  <!-- Recent Transactions -->
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Recent Transactions</h2>
+      <a href="{% url 'transactions:history' %}" class="btn btn-outline btn-small">View All →</a>
+    </div>
+
+    {% if recent_transactions %}
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Amount</th>
+            <th>Type</th>
+            <th>Merchant</th>
+            <th>Status</th>
+            <th>Confidence</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for txn in recent_transactions %}
+          <tr>
+            <td class="mono">#{{ txn.id }}</td>
+            <td class="mono amount-text">${{ txn.amount }}</td>
+            <td class="capitalize">{{ txn.transaction_type }}</td>
+            <td>{{ txn.merchant }}</td>
+
+            <td>
+              {% if txn.status == 'fraud' %}
+              <span class="badge badge-fraud">🚨 Fraud</span>
+              {% else %}
+              <span class="badge badge-safe">✅ Safe</span>
+              {% endif %}
+            </td>
+
+            <td class="mono">{{ txn.confidence_percent }}%</td>
+            <td class="table-date">{{ txn.created_at|date:"M d, H:i" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-state-icon">📭</div>
+      <div class="empty-state-title">No transactions yet</div>
+      <p class="empty-text">Start by checking your first transaction</p>
+      <a href="{% url 'transactions:check' %}" class="btn btn-primary empty-btn">Check Transaction →</a>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

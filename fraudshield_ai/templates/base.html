@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FraudShield AI{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+{% if messages %}
+<div class="messages-container">
+  {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}">
+    {% if message.tags == 'success' %}✅
+    {% elif message.tags == 'error' or message.tags == 'danger' %}❌
+    {% elif message.tags == 'warning' %}⚠️
+    {% else %}
+    {% endif %}
+    {{ message }}
+    <button class="alert-close" type="button">×</button>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<nav class="navbar">
+  <a href="{% url 'about:index' %}" class="nav-brand">
+    <div class="nav-logo-icon">🛡️</div>
+    <span class="nav-brand-text">Fraud<span>Shield</span> AI</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="{% url 'about:index' %}">🏠 Home</a></li>
+    <li><a href="{% url 'about:about' %}">ℹ️ About</a></li>
+
+    {% if user.is_authenticated %}
+    <li><a href="{% url 'dashboard:dashboard' %}">📊 Dashboard</a></li>
+    <li><a href="{% url 'transactions:check' %}">🔍 Check</a></li>
+    <li><a href="{% url 'transactions:history' %}">📜 History</a></li>
+    {% endif %}
+  </ul>
+
+  <div class="nav-actions">
+    {% if user.is_authenticated %}
+    <div class="nav-user-badge">
+      <div class="nav-avatar">{{ user.username|slice:":1"|upper }}</div>
+      {{ user.username }}
+    </div>
+    <a href="{% url 'accounts:logout' %}" class="btn-logout">Sign Out</a>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-outline btn-small">Login</a>
+    <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-small">Get Started</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>
+    © 2025 FraudShield AI · Built with Django + Machine Learning ·
+    <span class="accent-text">Protecting your finances</span>
+  </p>
+</footer>
+
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🛡️</div>
+      <h1 class="auth-title">Create Account</h1>
+      <p class="auth-subtitle">Join FraudShield AI and protect your finances</p>
+    </div>
+<!-- html-validate-disable-next attribute-allowed-values -->
+<form method="post" action="{% url 'accounts:signup' %}">
+
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control"
+          placeholder="Choose a username" required autofocus
+          autocomplete="username"
+          value="{{ request.POST.username|default:'' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input type="email" name="email" class="form-control"
+          placeholder="you@example.com" required
+          autocomplete="email"
+          value="{{ request.POST.email|default:'' }}">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control"
+          placeholder="Min. 8 characters" required
+          autocomplete="new-password">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" name="confirm_password" class="form-control"
+          placeholder="Repeat your password" required
+          autocomplete="new-password">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full btn-lg btn-spacing">
+        Create Account →
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      Already have an account?
+      <a href="{% url 'accounts:login' %}">Sign in</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

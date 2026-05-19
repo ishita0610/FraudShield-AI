@@ -1,0 +1,16 @@
+# Core web framework
+Django==4.2.11
+
+# Production app server and static files
+gunicorn==21.2.0
+whitenoise==6.6.0
+
+# Database and images
+psycopg2-binary==2.9.9
+Pillow==10.3.0
+
+# Machine learning / data processing
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.4.2
+joblib==1.4.2

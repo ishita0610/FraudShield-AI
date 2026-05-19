@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}Result — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="result-container">
+
+  <div class="result-card {% if is_fraud %}result-fraud{% else %}result-safe{% endif %}">
+
+    <!-- ICON + TITLE -->
+    {% if is_fraud %}
+      <span class="result-icon">🚨</span>
+      <h1 class="result-title">FRAUD DETECTED</h1>
+      <p class="result-subtitle">
+        This transaction shows strong indicators of fraudulent activity.
+      </p>
+    {% else %}
+      <span class="result-icon">✅</span>
+      <h1 class="result-title">TRANSACTION SAFE</h1>
+      <p class="result-subtitle">
+        No fraud patterns detected. This transaction appears legitimate.
+      </p>
+    {% endif %}
+
+    <!-- CONFIDENCE -->
+    <div class="confidence-bar-wrapper">
+
+      <div class="confidence-label">
+        <span>Confidence Score</span>
+        <span class="mono">{{ confidence }}%</span>
+      </div>
+
+      <div class="confidence-bar">
+        <div class="confidence-fill {% if is_fraud %}fraud-fill{% else %}safe-fill{% endif %}"
+             data-width="{{ confidence }}">
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS -->
+    <div class="result-details">
+
+      <div class="detail-item">
+        <div class="detail-label">Transaction ID</div>
+        <div class="detail-value">#{{ transaction.id }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Amount</div>
+        <div class="detail-value">${{ transaction.amount }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Type</div>
+        <div class="detail-value capitalize">{{ transaction.transaction_type }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Merchant</div>
+        <div class="detail-value">{{ transaction.merchant }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Location</div>
+        <div class="detail-value">{{ transaction.location }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Device</div>
+        <div class="detail-value capitalize">{{ transaction.device }}</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Hour</div>
+        <div class="detail-value">{{ transaction.transaction_time }}:00</div>
+      </div>
+
+      <div class="detail-item">
+        <div class="detail-label">Anomaly Score</div>
+        <div class="detail-value">{{ anomaly_score }}</div>
+      </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="result-actions">
+      <a href="{% url 'transactions:check' %}" class="btn btn-outline">← Check Another</a>
+      <a href="{% url 'dashboard:dashboard' %}"
+         class="btn {% if is_fraud %}btn-danger{% else %}btn-primary{% endif %}">
+        Dashboard →
+      </a>
+    </div>
+
+  </div>
+
+  {% if is_fraud %}
+  <div class="fraud-warning">
+    ⚠️ <strong>Recommended Actions:</strong>
+    Block this transaction, notify your bank, and review recent activity immediately.
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

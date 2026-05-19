@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}FraudShield AI — AI-Powered Fraud Detection{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge"><span class="pulse-dot"></span> Real-Time AI Detection</div>
+  <h1 class="hero-title">
+    Stop Fraud<br>
+    <span class="accent">Before It</span><br>
+    <span class="accent-blue">Happens.</span>
+  </h1>
+  <p class="hero-desc">
+    FraudShield AI uses advanced machine learning and anomaly detection to analyze financial transactions in real-time — flagging suspicious activity before damage is done.
+  </p>
+  <div class="hero-actions">
+    {% if user.is_authenticated %}
+    <a href="{% url 'dashboard:dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard →</a>
+    <a href="{% url 'transactions:check' %}" class="btn btn-outline btn-lg">Check Transaction</a>
+    {% else %}
+    <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-lg">Start Free →</a>
+    <a href="{% url 'accounts:login' %}" class="btn btn-outline btn-lg">Sign In</a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Enterprise-Grade Protection</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">ML-Powered Detection</div>
+        <div class="feature-desc">Random Forest classifier trained on thousands of transactions distinguishes legitimate activity from fraud patterns.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔬</div>
+        <div class="feature-title">Anomaly Detection</div>
+        <div class="feature-desc">Isolation Forest algorithm surfaces unusual behavior that doesn't match typical spending profiles.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Real-Time Analysis</div>
+        <div class="feature-desc">Sub-second predictions powered by pre-trained models — get results instantly on every transaction check.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <div class="feature-title">Secure OTP Auth</div>
+        <div class="feature-desc">Two-factor authentication with one-time passwords ensures only verified users access your fraud detection dashboard.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Transaction History</div>
+        <div class="feature-desc">Full audit trail of every check — review past transactions, fraud rates, and confidence scores at a glance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">Confidence Scoring</div>
+        <div class="feature-desc">Every prediction comes with a confidence percentage so you can make informed decisions about borderline cases.</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

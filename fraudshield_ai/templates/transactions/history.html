@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %}Transaction History — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="container history-container">
+
+  <div class="page-header history-header">
+    <div>
+      <h1 class="page-title">📜 Transaction History</h1>
+      <p class="page-subtitle">
+        All fraud checks for <strong class="accent-text">{{ user.username }}</strong>
+      </p>
+    </div>
+    <a href="{% url 'transactions:check' %}" class="btn btn-primary">+ New Check</a>
+  </div>
+
+  <!-- Summary -->
+  <div class="stat-grid history-stats">
+    <div class="stat-card stat-total">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value">{{ total }}</div>
+      <div class="stat-label">Total</div>
+    </div>
+
+    <div class="stat-card stat-fraud">
+      <div class="stat-icon">🚨</div>
+      <div class="stat-value">{{ fraud_count }}</div>
+      <div class="stat-label">Fraud</div>
+    </div>
+
+    <div class="stat-card stat-safe">
+      <div class="stat-icon">✅</div>
+      <div class="stat-value">{{ safe_count }}</div>
+      <div class="stat-label">Safe</div>
+    </div>
+  </div>
+
+  {% if transactions %}
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>#ID</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Merchant</th>
+          <th>Location</th>
+          <th>Device</th>
+          <th>Hour</th>
+          <th>Status</th>
+          <th>Confidence</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for txn in transactions %}
+        <tr>
+          <td class="mono muted">#{{ txn.id }}</td>
+          <td class="mono amount-text">${{ txn.amount }}</td>
+          <td class="capitalize">{{ txn.transaction_type }}</td>
+          <td>{{ txn.merchant }}</td>
+          <td class="text-secondary">{{ txn.location }}</td>
+          <td class="capitalize text-secondary">{{ txn.device }}</td>
+          <td class="mono">{{ txn.transaction_time }}:00</td>
+
+          <td>
+            {% if txn.status == 'fraud' %}
+            <span class="badge badge-fraud">🚨 Fraud</span>
+            {% else %}
+            <span class="badge badge-safe">✅ Safe</span>
+            {% endif %}
+          </td>
+
+          <td>
+            <div class="confidence-wrapper">
+              <span class="mono">{{ txn.confidence_percent }}%</span>
+              <div class="confidence-bar">
+                <div class="confidence-fill {{ txn.status }}"
+     data-width="{{ txn.confidence_percent }}">
+</div>      </div>
+            </div>
+          </td>
+
+          <td class="table-date">
+            {{ txn.created_at|date:"M d, Y H:i" }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-state-icon">📭</div>
+    <div class="empty-state-title">No transaction history yet</div>
+    <p class="empty-text">Start analyzing transactions to build your history</p>
+    <a href="{% url 'transactions:check' %}" class="btn btn-primary empty-btn">
+      Check First Transaction →
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

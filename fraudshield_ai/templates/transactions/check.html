@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Check Transaction — FraudShield AI{% endblock %}
+
+{% block content %}
+<div class="container check-container">
+
+  <div class="page-header">
+    <h1 class="page-title">🔍 Check Transaction</h1>
+    <p class="page-subtitle">Enter transaction details to run fraud analysis</p>
+  </div>
+
+  <div class="check-wrapper">
+    <div class="card">
+
+      <div class="model-status">
+        <div class="status-dot"></div>
+        <span class="status-text">ML Model Ready</span>
+        <span class="status-meta">Random Forest + Isolation Forest</span>
+      </div>
+<!-- html-validate-disable-next attribute-allowed-values -->
+<form method="post" action="{% url 'transactions:check' %}">
+        {% csrf_token %}
+
+        <div class="check-grid">
+          <div class="form-group">
+            <label class="form-label">Transaction Amount ($)</label>
+            <input type="number" name="amount" class="form-control"
+              placeholder="e.g. 1500.00" min="0.01" step="0.01" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Transaction Type</label>
+            <select name="transaction_type" class="form-control" required>
+              <option value="">-- Select Type --</option>
+              <option value="purchase">Purchase</option>
+              <option value="transfer">Transfer</option>
+              <option value="withdrawal">Withdrawal</option>
+              <option value="deposit">Deposit</option>
+              <option value="payment">Payment</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Merchant Name</label>
+            <input type="text" name="merchant" class="form-control"
+              placeholder="e.g. Amazon, Walmart" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" name="location" class="form-control"
+              placeholder="e.g. New York, US" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Device Used</label>
+            <select name="device" class="form-control" required>
+              <option value="">-- Select Device --</option>
+              <option value="mobile">Mobile</option>
+              <option value="desktop">Desktop</option>
+              <option value="tablet">Tablet</option>
+              <option value="atm">ATM</option>
+              <option value="pos">POS Terminal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Transaction Hour (0–23)</label>
+            <input type="number" name="transaction_time" class="form-control"
+              placeholder="e.g. 14 for 2PM" min="0" max="23" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg btn-spacing">
+          🔍 Analyze Transaction →
+        </button>
+      </form>
+    </div>
+
+    <div class="tip-box">
+      💡 <strong class="tip-highlight">Tip:</strong>
+      Transactions at odd hours (midnight–6am), very high amounts, or unusual locations are more likely to be flagged as suspicious.
+    </div>
+  </div>
+</div>
+{% endblock %}
