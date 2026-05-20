@@ -44,9 +44,6 @@ local_settings.py
 .env.local
 .env.*.local
 
-# ML Models
-
-
 # OS
 .DS_Store
 Thumbs.db
